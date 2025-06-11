@@ -50,10 +50,12 @@ public class AdminController {
 	
 	private int teacherDeleteErrorValue; //used for deleting teacher, 0 means the teacher has not any assigned courses, 1 means it has
 	
-	@GetMapping("/adminPanel")
-	public String showAdminPanel() {
+	@GetMapping("admin/dashboard")
+	public String showDashboardPage() {
 		
-		return "admin/admin-panel";
+		return "admin/dashboard";
+
+		//! may mali talaga dito malay koba ;-;
 	}
 	
 	@GetMapping("/adminInfo")
