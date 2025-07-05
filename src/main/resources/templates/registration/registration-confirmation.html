@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to PUP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #1a365d;
+            --secondary: #e2b979;
+            --accent: #4299e1;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            color: #1a202c;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #800000 0%, #400000 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+
+        @layer utilities {
+            .bg-maroon-700 { background-color: #800000; }
+            .bg-maroon-800 { background-color: #400000; }
+            .text-maroon-100 { color: #ffcccc; }
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(66, 153, 225, 0.1);
+            color: var(--accent);
+            font-size: 24px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4107009d-6fa2-4108-9852-b489a6b7e03c.png" alt="PUP official logo with golden yellow and navy blue colors" class="h-8 w-auto" style="outline: #800000 dotted 3px; outline-offset: 1px;" />
+                        <span class="ml-2 text-xl font-bold text-gray-800">PUP</span>
+                    </div>
+                </div>
+                <div class="hidden md:ml-6 md:flex md:items-center md:space-x-8">
+                    <a href="#" class="text-gray-900 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</a>
+                    <a href="#" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">About</a>
+                    <a href="#" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Academics</a>
+                    <a href="#" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Admissions</a>
+                    <a href="#" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Contact</a>
+                </div>
+                <div class="flex items-center">
+                    <button class="bg-maroon-700 hover:bg-maroon-800 text-white px-4 py-2 rounded-md text-sm font-medium">
+                        Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-gradient text-white">
+        <div class="max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
+                    Welcome <span class="text-red-300">Pup</span>
+                </h1>
+                <div class="mt-16 flex justify-center space-x-6">
+                    <a href="/login" class="inline-flex items-center px-8 py-4 border border-transparent text-lg font-bold rounded-xl shadow-lg text-white bg-blue-600 hover:bg-blue-700 transition-all">
+                        Log In
+                    </a>
+                    <a href="/register" class="inline-flex items-center px-8 py-4 border border-transparent text-lg font-bold rounded-xl shadow-lg text-black bg-white hover:bg-gray-50 transition-all">
+                        Register
+                    </a>
+                </div>
+                <p class="mt-12 max-w-3xl mx-auto text-lg text-maroon-100">
+                    Start your journey with PUP today
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Quick Links -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
+                <div class="p-6">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Academic Programs</h3>
+                    <p class="text-gray-500">
+                        Discover our wide range of undergraduate and graduate programs designed for your success.
+                    </p>
+                    <div class="mt-4">
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">View Programs →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
+                <div class="p-6">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Events & Activities</h3>
+                    <p class="text-gray-500">
+                        Stay updated with our academic calendar, events, and student activities throughout the year.
+                    </p>
+                    <div class="mt-4">
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">View Calendar →</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
+                <div class="p-6">
+                    <div class="feature-icon">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">News & Announcements</h3>
+                    <p class="text-gray-500">
+                        Get the latest updates, news, and important announcements from the university.
+                    </p>
+                    <div class="mt-4">
+                        <a href="#" class="text-blue-600 hover:text-blue-800 font-medium">Read News →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Section -->
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-12">
+            <div class="md:flex">
+                <div class="md:flex-shrink-0">
+                    <img src="https://scontent.fmnl17-8.fna.fbcdn.net/v/t1.6435-9/150530080_280445783503909_1116770413107022343_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=cc71e4&_nc_eui2=AeFab29MGwvqhpHPkiiG9BcFw6xyDzae-2_DrHIPNp77b72bxwPgXLwcKvVeuszVg3oZrOhMFyLCDLjjDw0O2Sdl&_nc_ohc=cNawhHcBTYUQ7kNvwFHMQ63&_nc_oc=AdkLGbiSNMfoyTOt9pfZx4Ld-OgY49ZnNIrwIKsqzyxx99dv2auzrDJYo6uEexWwmLc&_nc_zt=23&_nc_ht=scontent.fmnl17-8.fna&_nc_gid=ctpuRG5qi34Wo6_NRF0-2A&oh=00_AfPqQ1ITWodheFBg-eEbkZ_9YxR6SEcwiuORs4XxbPns5g&oe=688DDD04" alt="PUP San Pedro campus" class="h-full w-full object-cover md:w-96" />
+                </div>
+                <div class="p-8">
+                    <div class="uppercase tracking-wide text-sm text-blue-600 font-semibold">Featured</div>
+                    <h2 class="mt-2 text-3xl font-extrabold text-gray-900">Our San Pedro Campus</h2>
+                    <p class="mt-4 text-gray-500">
+                        Experience our state-of-the-art facilities designed to provide the best learning environment. 
+                        Our campus features classrooms, computer laboratories, and collaborative spaces that 
+                        foster innovation and creativity.
+                    </p>
+                    <div class="mt-6">
+                        <a href="#" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+                            Take Virtual Tour
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="bg-gray-50 rounded-lg shadow-md p-8 mb-12">
+            <div class="max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                    <div class="text-center">
+                        <div class="text-4xl font-extrabold text-blue-600">50+</div>
+                        <div class="mt-2 text-lg font-medium text-gray-900">Degree Programs</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-extrabold text-blue-600">30K+</div>
+                        <div class="mt-2 text-lg font-medium text-gray-900">Students</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-extrabold text-blue-600">1K+</div>
+                        <div class="mt-2 text-lg font-medium text-gray-900">Faculty Members</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-extrabold text-blue-600">75+</div>
+                        <div class="mt-2 text-lg font-medium text-gray-900">Years of Excellence</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Testimonials -->
+        <div class="mb-12">
+            <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-8">What Our Students Say</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md card-hover">
+                    <div class="flex items-center mb-4">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/13fad74e-571c-44bb-b175-19805f84d75c.png" alt="Smiling female student with glasses" class="h-12 w-12 rounded-full" />
+                        <div class="ml-4">
+                            <h4 class="font-medium text-gray-900">Maria Santos</h4>
+                            <p class="text-gray-500 text-sm">BS Accountancy, 2022</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">
+                        "PUP provided me with the skills and knowledge that helped me land my dream job right after graduation. The hands-on approach to learning was invaluable."
+                    </p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md card-hover">
+                    <div class="flex items-center mb-4">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/2069d22c-12e2-4b3a-ba31-03759a95e617.png" alt="Male student in graduation cap smiling" class="h-12 w-12 rounded-full" />
+                        <div class="ml-4">
+                            <h4 class="font-medium text-gray-900">Juan Dela Cruz</h4>
+                            <p class="text-gray-500 text-sm">BS Entrepreneurship, 2021</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">
+                        "The faculty at PUP are truly dedicated to student success. They go above and beyond to ensure we understand the material and are prepared for our careers."
+                    </p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md card-hover">
+                    <div class="flex items-center mb-4">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/59fbdcac-86cb-40e1-8ac8-97f0902ef86d.png" alt="Female student with curly hair smiling" class="h-12 w-12 rounded-full" />
+                        <div class="ml-4">
+                            <h4 class="font-medium text-gray-900">Andrea Reyes</h4>
+                            <p class="text-gray-500 text-sm">BS Information Technology, 2023</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">
+                        "The diverse student community at PUP helped me grow not just academically but also personally. I made lifelong friends and valuable connections."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="bg-maroon-700 text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl">
+                    Ready to start your journey with PUP?
+                </h2>
+                <p class="mt-4 max-w-3xl mx-auto text-xl">
+                    Applications are now open for the upcoming academic year. Don't miss your chance to be part of our community.
+                </p>
+                <div class="mt-8">
+                    <a href="#" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-gray-50">
+                        Apply Now
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-medium mb-4">About PUP</h3>
+                    <p class="text-gray-300">
+                        The Polytechnic University of the Philippines is committed to providing quality, relevant, and accessible education.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-medium mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 hover:text-white">Admissions</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">Academics</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">Research</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white">Student Life</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-medium mb-4">Contact Us</h3>
+                    <address class="text-gray-300 not-italic">
+                        San Pedro, Laguna<br>
+                        Philippines<br>
+                        <br>
+                        Phone: (02) 1234-5678<br>
+                        Email: info@pup.edu.ph
+                    </address>
+                </div>
+                <div>
+                    <h3 class="text-lg font-medium mb-4">Connect With Us</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white">
+                            <span class="sr-only">Facebook</span>
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white">
+                            <span class="sr-only">Twitter</span>
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white">
+                            <span class="sr-only">Instagram</span>
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-white">
+                            <span class="sr-only">YouTube</span>
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-12 pt-8 border-t border-gray-700 text-center text-gray-400 text-sm">
+                <p>© 2024 Polytechnic University of the Philippines. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    
+    <!-- Animation script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add animation to cards when they come into view
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fadeIn');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.card-hover').forEach(card => {
+                observer.observe(card);
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>Courses</title>
+	<!-- fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" th:href="@{/css/student/student-navbar.css}">
+	
+	<link rel="stylesheet" th:href="@{/css/student/student-course-detail.css}">
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+	<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+	
+	<nav>
+		<div class="nav-brand-container">
+        	<img th:src="@{/images/pup_san_pedro_logo.png}" alt="PUP San Pedro Campus Logo" class="nav-logo">
+			<h1>PUP STUDENT MANAGEMENT</h1>
+		</div>	
+		<ul>
+			<li>								
+				<a><i class="fa fa-user-circle"></i><span th:text="${student.firstName}"></span></a>
+				<ul class="dropdown">
+					<li>										
+						<form action="#" th:action="@{/logout}" method="POST">	
+							<input type="submit" value="Logout"></input>						
+						</form>						
+					</li>
+				</ul>
+			</li>
+		</ul>		
+	</nav>
+	
+	<div class="vertical-navbar">
+		<ul th:each="course : ${courses}">
+			<li><a th:href="@{/student/{studentId}/courses/{courseId}(studentId=${student.id}, courseId=${course.id})}"><i class="fa fa-tag fa-navbar"></i><span th:text="${course.code}"></span></a></li>
+		</ul>
+	</div>
+	
+	<div class="content">
+	
+	<h3 class="main-dashboard-heading">Assignments</h3>
+	
+	<div th:if="${assignments.size() == 0}">There are no assignments.</div>
+	
+	<div  th:if="${assignments.size() != 0}">
+		
+		<div class="card-container">
+			<div class="card" th:each="assignment : ${assignments}">
+				<a th:href="@{/student/{studentId}/courses/{courseId}/assignment/{assignmentId}
+									(studentId=${student.id}, courseId=${course.id}, 
+									assignmentId=${assignment.id})}">
+					<i class="fas fa-clipboard-list"></i>
+					<span id="card-name" th:text="${assignment.name}"></span>
+					<span id="card-day" th:if="${assignment.daysRemaining >= 0}" th:text="${assignment.daysRemaining + ' days'}"></span>
+					<span id="card-day" th:if="${assignment.daysRemaining < 0}">Overdue</span>
+				</a>
+			</div>
+		</div>
+	</div>
+	
+	
+	<h3>Grades</h3>
+	  
+	<table>
+		<thead>
+			<tr>
+				<th id="table-top-left">Grade 1</th>
+				<th>Grade 2</th>
+				<th id="table-top-right">Grade 3</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr>
+				<td th:if="${gradeDetails.getGradeOne() == -1}">-</td>
+				<td th:if="${gradeDetails.getGradeOne() != -1}" th:text=${gradeDetails.gradeOne}></td>					
+				<td th:if="${gradeDetails.getGradeTwo() == -1}">-</td>
+				<td th:if="${gradeDetails.getGradeTwo() != -1}" th:text=${gradeDetails.gradeTwo}></td>
+				<td th:if="${gradeDetails.getGradeThree() == -1}">-</td>
+				<td th:if="${gradeDetails.getGradeThree() != -1}" th:text=${gradeDetails.gradeThree}></td>	
+			</tr>
+		</tbody>
+	</table>
+	
+	</div>
+</body>
+
+</html>

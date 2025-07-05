@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="eng" xlmns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Admin Info</title>
+	
+	<!-- fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" th:href="@{/css/navbar.css}">
+	
+	<link rel="stylesheet" th:href="@{/css/admin/admin-info.css}">
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">	
+	
+</head>
+
+<body>
+	
+	<nav>
+		<div class="nav-brand-container">
+        	<img th:src="@{/images/pup_san_pedro_logo.png}" alt="PUP San Pedro Campus Logo" class="nav-logo">
+			<h1>PUP STUDENT MANAGEMENT</h1>
+		</div>	
+		<ul>
+			<li>								
+				<a><i class="fa fa-user-circle"></i>Admin</a>
+				<ul class="dropdown">
+					<li>										
+						<form action="#" th:action="@{/logout}" method="POST">	
+							<input type="submit" value="Logout"></input>						
+						</form>						
+					</li>
+				</ul>
+			</li>
+		</ul>		
+	</nav>
+	
+	<div class="vertical-navbar">
+		<ul>
+			<li><a th:href="@{/admin/adminPanel}"><i class="fa fa-home fa-navbar"></i><span>Dashboard</span></a></li>
+			<li><a th:href="@{/admin/courses}"><i class="fa fa-pencil fa-navbar"></i><span>Courses</span></a></li>
+			<li><a th:href="@{/admin/students}"><i class="fa fa-user fa-navbar"></i><span>Students</span></a></li>
+			<li><a th:href="@{/admin/teachers}"><i class="fa fa-user-secret fa-navbar"></i><span>Teachers</span></a></li>
+			<li><a th:href="@{/admin/adminPanel}"><i class="fa fa-calendar fa-navbar"></i><span>Calendar</span></a></li>
+			<li><a th:href="@{/admin/adminPanel}"><i class="fa fa-bullhorn fa-navbar"></i><span>Announcements</span></a></li>
+			<li><a th:href="@{/admin/adminInfo}"><i class="fa fa-info-circle fa-navbar"></i><span>Info</span></a></li>
+		</ul>
+	</div>
+	
+	
+	
+	<div class="content">
+    	<h3 class="main-dashboard-heading">Admin Statistics</h3>
+    	<p class="dashboard-description">Overview of system statistics and recent activities</p>
+
+    	<div class="stats-cards-grid">
+        	<div class="stat-card">
+            	<div class="stat-header">
+               		<span class="stat-title">Total Courses</span>
+                	<i class="stat-icon fa fa-pencil"></i> </div>
+            	<div class="stat-value" th:text="${courseSize}">0</div>
+            	<div class="stat-trend">
+                	</div>
+        	</div>
+        	<div class="stat-card">
+            	<div class="stat-header">
+                	<span class="stat-title">Total Students</span>
+                	<i class="stat-icon fa fa-user"></i>
+            	</div>
+            	<div class="stat-value" th:text="${studentSize}">0</div>
+            	<div class="stat-trend"></div>
+        	</div>
+        	<div class="stat-card">
+            	<div class="stat-header">
+                	<span class="stat-title">Total Teachers</span>
+                	<i class="stat-icon fa fa-user-secret"></i>
+            	</div>
+            	<div class="stat-value" th:text="${teacherSize}">0</div>
+            	<div class="stat-trend"></div>
+        	</div>
+        	<div class="stat-card">
+            	<div class="stat-header">
+                	<span class="stat-title">Active Courses</span>
+                	<i class="stat-icon fa fa-book"></i> </div>
+            	<div class="stat-value" th:text="${teacherSize}">0</div> 
+				<div class="stat-trend"></div>
+        	</div>
+    	</div>
+
+    <div class="recent-activities-container">
+        <h3 class="section-title">Recent Activities</h3>
+        <a href="#" class="view-all-link">View All</a>
+        <p>No recent activities.</p>
+    </div>
+
+</div>
+
+</body>
+
+</html>

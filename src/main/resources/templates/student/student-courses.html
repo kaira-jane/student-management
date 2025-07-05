@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<html lang="eng" xlmns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Courses</title>
+	<!-- fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" th:href="@{/css/student/student-navbar.css}">
+	
+	<link rel="stylesheet" th:href="@{/css/student/student-courses.css}">
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+	<!-- <nav>
+		<i class="fa fa-mortar-board"></i>
+		<h1>STUDENT MANAGEMENT SYSTEM</h1>		
+		<ul>
+			<li>								
+				<a><i class="fa fa-user-circle"></i><span th:text="${student.firstName}"></span></a>
+				<ul class="dropdown">
+					<li>										
+						<form action="#" th:action="@{/logout}" method="POST">	
+							<input type="submit" value="Logout"></input>						
+						</form>						
+					</li>
+				</ul>
+			</li>
+		</ul>		
+	</nav> -->
+
+	<nav>
+		<div class="nav-brand-container">
+        	<img th:src="@{/images/pup_san_pedro_logo.png}" alt="PUP San Pedro Campus Logo" class="nav-logo">
+			<h1>PUP STUDENT MANAGEMENT</h1>
+		</div>	
+		<ul>
+			<li>								
+				<a><i class="fa fa-user-circle"></i><span th:text="${student.firstName}"></span></a>
+				<ul class="dropdown">
+					<li>										
+						<form action="#" th:action="@{/logout}" method="POST">	
+							<input type="submit" value="Logout"></input>						
+						</form>						
+					</li>
+				</ul>
+			</li>
+		</ul>		
+	</nav>
+	
+	<div class="vertical-navbar">
+		<ul th:each="course : ${courses}">
+			<li><a th:href="@{/student/{studentId}/courses/{courseId}(studentId=${student.id}, courseId=${course.id})}"><i class="fa fa-tag fa-navbar"></i><span th:text="${course.code}"></span></a></li>
+		</ul>
+	</div>
+	
+	<<div class="content">
+		<h3 class="main-dashboard-heading">Courses</h3>
+    	<p class="dashboard-description">Courses enrolled this semester</p>
+	
+	<div th:if="${courses.size() == 0}">There are no courses assigned.</div>
+	
+	<!-- <div class="sections">
+		<div th:each="course : ${courses}">
+			<div class="section">
+				<a th:href="@{/student/{studentId}/courses/{courseId}(studentId=${student.id}, courseId=${course.id})}"><div th:text="${course.name}"></div></a>				
+			</div>
+		</div>
+	</div> -->
+	
+	<div class="sections">
+		<div th:each="course : ${courses}">
+			<div class="section">
+				<a th:href="@{/student/{studentId}/courses/{courseId}(studentId=${student.id}, courseId=${course.id})}">
+					<i class="fa fa-book fa-3x course-icon"></i> <span class="course-name" th:text="${course.name}"></span>
+				</a>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+
+</html>
