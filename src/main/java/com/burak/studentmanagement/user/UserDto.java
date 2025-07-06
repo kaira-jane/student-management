@@ -6,33 +6,34 @@ import javax.validation.constraints.Size;
 
 import com.burak.studentmanagement.entity.Role;
 
-
 public class UserDto {
-	
+
 	@NotBlank(message = "is required")
 	@Size(min = 1, message = "is required")
 	private String userName;
-	
+
 	@NotBlank(message = "is required")
 	@Size(min = 1, message = "is required")
 	private String password;
-	
+
 	@NotBlank(message = "is required")
 	@Size(min = 1, message = "is required")
 	private String firstName;
-	
+
 	@NotBlank(message = "is required")
 	@Size(min = 1, message = "is required")
 	private String lastName;
-	
+
 	@NotBlank(message = "is required")
 	@Size(min = 1, message = "is required")
 	private String email;
-	
+
 	private Role role;
-	
+
+	private Integer curriculumId;
+
 	public UserDto() {
-		
+
 	}
 
 	public String getUserName() {
@@ -83,7 +84,11 @@ public class UserDto {
 		this.role = role;
 	}
 
-	
-	
-	
+	public Integer getCurriculumId() {
+		return curriculumId;
+	}
+
+	public void setCurriculumId(Integer curriculumId) {
+		this.curriculumId = curriculumId;
+	}
 }

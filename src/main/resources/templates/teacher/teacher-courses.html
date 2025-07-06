@@ -58,6 +58,9 @@
 
 
 	<div class="vertical-navbar">
+		<ul>
+			<li><a th:href="@{/teacher/{teacherId}/schedule(teacherId=${teacher.id})}"><i class="fa fa-calendar fa-navbar"></i><span>My Schedule</span></a></li>
+		</ul>
 		<ul th:each="course : ${courses}">
 			<li><a th:href="@{/teacher/{teacherId}/courses/{courseId}(teacherId=${teacher.id}, courseId=${course.id})}"><i class="fa fa-tag fa-navbar"></i><span th:text="${course.code}"></span></a></li>
 		</ul>

@@ -11,10 +11,10 @@ import com.burak.studentmanagement.entity.Course;
 
 @Service
 public class CourseServiceImpl implements CourseService {
-	
+
 	@Autowired
 	private CourseDao courseDao;
-	
+
 	@Override
 	@Transactional
 	public void save(Course course) {
@@ -35,8 +35,30 @@ public class CourseServiceImpl implements CourseService {
 
 	@Override
 	@Transactional
+	public Course findCourseByIdWithStudents(int id) {
+		Course course = courseDao.findCourseById(id);
+		if (course != null && course.getStudents() != null) {
+			// Force loading of students
+			course.getStudents().size();
+		}
+		return course;
+	}
+
+	@Override
+	@Transactional
+	public Course findCourseByIdWithSchedules(int id) {
+		Course course = courseDao.findCourseById(id);
+		// Force load schedules
+		if (course != null && course.getSchedules() != null) {
+			course.getSchedules().size();
+		}
+		return course;
+	}
+
+	@Override
+	@Transactional
 	public void deleteCourseById(int id) {
-		courseDao.deleteCourseById(id);		
+		courseDao.deleteCourseById(id);
 	}
 
 }

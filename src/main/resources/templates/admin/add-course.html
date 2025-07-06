@@ -45,10 +45,11 @@
 		<ul>
 			<li><a th:href="@{/admin/adminPanel}"><i class="fa fa-home fa-navbar"></i><span>Dashboard</span></a></li>
 			<li><a th:href="@{/admin/courses}"><i class="fa fa-pencil fa-navbar"></i><span>Courses</span></a></li>
-			<li><a th:href="@{/admin/students}"><i class="fa fa-user fa-navbar"></i><span>Students</span></a></li>
+			<li><a th:href="@{/admin/students}" class="active"><i class="fa fa-user fa-navbar"></i><span>Students</span></a></li>
 			<li><a th:href="@{/admin/teachers}"><i class="fa fa-user-secret fa-navbar"></i><span>Teachers</span></a></li>
-			<li><a th:href="@{/admin/adminPanel}"><i class="fa fa-calendar fa-navbar"></i><span>Calendar</span></a></li>
-			<li><a th:href="@{/admin/adminPanel}"><i class="fa fa-bullhorn fa-navbar"></i><span>Announcements</span></a></li>
+			<li><a th:href="@{/admin/curriculum/list}"><i class="fa fa-graduation-cap fa-navbar"></i><span>Curriculums</span></a></li>
+            <li><a th:href="@{/admin/section/list}"><i class="fa fa-users fa-navbar"></i><span>Sections</span></a></li>
+			<li><a th:href="@{/admin/enrollment/requests}"><i class="fa fa-clipboard-list fa-navbar"></i><span>Enrollment Requests</span></a></li>
 			<li><a th:href="@{/admin/adminInfo}"><i class="fa fa-info-circle fa-navbar"></i><span>Info</span></a></li>
 		</ul>
 	</div>

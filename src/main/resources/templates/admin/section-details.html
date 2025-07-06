@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="eng" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Section Details</title>
+    
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" th:href="@{/css/navbar.css}">
+	
+	<link rel="stylesheet" th:href="@{/css/admin/admin-panel.css}">
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">	
+    
+    <style>
+        
+        .section-info {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-name {
+            font-weight: bold;
+            color: #1976d2;
+            font-size: 24px;
+        }
+        
+        .section-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-inactive {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .section-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .detail-item {
+            font-size: 14px;
+        }
+        
+        .detail-item strong {
+            color: #333;
+        }
+        
+        .detail-item span {
+            color: #666;
+        }
+        
+        .enrollment-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        
+        .enrollment-bar {
+            width: 100%;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .enrollment-fill {
+            height: 100%;
+            background: #28a745;
+            transition: width 0.3s ease;
+        }
+        
+        .enrollment-fill.full {
+            background: #dc3545;
+        }
+        
+        .action-buttons {
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            margin-right: 10px;
+            transition: opacity 0.2s;
+        }
+        
+        .btn-primary {
+            background-color: #1976d2;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+        }
+        
+        .students-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .student-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .student-table th,
+        .student-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .student-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .student-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .no-students {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .no-students i {
+            font-size: 48px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-brand-container">
+            <img th:src="@{/images/pup_san_pedro_logo.png}" alt="PUP San Pedro Campus Logo" class="nav-logo">
+            <h1>PUP STUDENT MANAGEMENT</h1>
+        </div>	
+        <ul>
+            <li>								
+                <a><i class="fa fa-user-circle"></i>Admin</a>
+                <ul class="dropdown">
+                    <li>										
+                        <form action="#" th:action="@{/logout}" method="POST">	
+                            <input type="submit" value="Logout"></input>						
+                        </form>						
+                    </li>
+                </ul>
+            </li>
+        </ul>		
+    </nav>
+    
+    <div class="vertical-navbar">
+        <ul>
+			<li><a th:href="@{/admin/adminPanel}"><i class="fa fa-home fa-navbar"></i><span>Dashboard</span></a></li>
+			<li><a th:href="@{/admin/courses}"><i class="fa fa-pencil fa-navbar"></i><span>Courses</span></a></li>
+			<li><a th:href="@{/admin/students}"><i class="fa fa-user fa-navbar"></i><span>Students</span></a></li>
+			<li><a th:href="@{/admin/teachers}"><i class="fa fa-user-secret fa-navbar"></i><span>Teachers</span></a></li>
+			<li><a th:href="@{/admin/curriculum/list}"><i class="fa fa-graduation-cap fa-navbar"></i><span>Curriculums</span></a></li>
+            <li><a th:href="@{/admin/section/list}" class="active"><i class="fa fa-users fa-navbar"></i><span>Sections</span></a></li>
+			<li><a th:href="@{/admin/enrollment/requests}"><i class="fa fa-clipboard-list fa-navbar"></i><span>Enrollment Requests</span></a></li>
+			<li><a th:href="@{/admin/adminInfo}"><i class="fa fa-info-circle fa-navbar"></i><span>Info</span></a></li>
+        </ul>
+    </div>
+    
+    <div class="content">
+        <h3 class="main-dashboard-heading">Section Details</h3>
+        <p class="dashboard-description">View section information and enrolled students</p>
+        
+        <div th:if="${success}" class="success-message" th:text="${success}"></div>
+        <div th:if="${error}" class="error-message" th:text="${error}"></div>
+        
+        <div class="section-info">
+            <div class="section-header">
+                <div class="section-name" th:text="${section.name}"></div>
+                <span th:class="${'section-status status-' + (section.active ? 'active' : 'inactive')}" 
+                      th:text="${section.active ? 'Active' : 'Inactive'}"></span>
+            </div>
+            
+            <div class="section-details">
+                <div class="detail-item">
+                    <strong>Curriculum:</strong>
+                    <span th:text="${section.curriculum.code + ' - ' + section.curriculum.name}"></span>
+                </div>
+                <div class="detail-item">
+                    <strong>Year Level:</strong>
+                    <span th:text="${section.yearLevel}"></span>
+                </div>
+                <div class="detail-item">
+                    <strong>Semester:</strong>
+                    <span th:text="${section.semester}"></span>
+                </div>
+                <div class="detail-item">
+                    <strong>School Year:</strong>
+                    <span th:text="${section.schoolYear}"></span>
+                </div>
+                <div class="detail-item" th:if="${section.description}">
+                    <strong>Description:</strong>
+                    <span th:text="${section.description}"></span>
+                </div>
+            </div>
+            
+            <div class="enrollment-info">
+                <div class="detail-item">
+                    <strong>Enrollment:</strong>
+                    <span th:text="${section.currentEnrollment + ' / ' + section.capacity + ' students'}"></span>
+                </div>
+                <div class="enrollment-bar">
+                    <div th:class="${'enrollment-fill ' + (section.full ? 'full' : '')}" 
+                         th:style="'width: ' + ${(section.currentEnrollment * 100 / section.capacity) + '%'}"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <a th:href="@{/admin/section/{sectionId}/edit(sectionId=${section.id})}" class="btn btn-secondary">
+                <i class="fa fa-edit"></i> Edit Section
+            </a>
+            
+            <form th:action="@{/admin/section/{sectionId}/toggle(sectionId=${section.id})}" 
+                  method="POST" style="display: inline;">
+                <button type="submit" class="btn" 
+                        th:class="${section.active ? 'btn-warning' : 'btn-success'}"
+                        th:text="${section.active ? 'Deactivate' : 'Activate'}">
+                </button>
+            </form>
+            
+            <a th:href="@{/admin/section/list}" class="btn btn-primary">
+                <i class="fa fa-arrow-left"></i> Back to Sections
+            </a>
+        </div>
+        
+        <div class="students-section">
+            <h4><i class="fa fa-users"></i> Enrolled Students</h4>
+            
+            <div th:if="${students.size() == 0}" class="no-students">
+                <i class="fa fa-user-graduate"></i>
+                <h4>No Students Enrolled</h4>
+                <p>No students have been assigned to this section yet.</p>
+            </div>
+            
+            <div th:if="${students.size() > 0}">
+                <table class="student-table">
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="student : ${students}">
+                            <td th:text="${student.id}"></td>
+                            <td th:text="${student.firstName + ' ' + student.lastName}"></td>
+                            <td th:text="${student.email}"></td>
+                            <td th:text="${student.userName}"></td>
+                            <td>
+                                <form th:action="@{/admin/student-section/remove/{studentId}(studentId=${student.id})}" 
+                                      method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-danger" 
+                                            onclick="return confirm('Remove this student from the section?')">
+                                        <i class="fa fa-user-minus"></i> Remove
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html> 

@@ -1,0 +1,5 @@
+to revise:
+1.curriculums for students with courses in it
+2. enrollment for students (students can enroll themselvves to courses in a curriculum set for them and is sent to the admin for approval)
+3. putting schedules for each courses, course list should have a schedule in them, students and teachers will be able to see these schedule
+4. create sections for students (ex. BSIT 1-1, BSIT 1-2, BSIT 1-3...); should be seen by admin, students (kung ano section nila), teachers (kung anong section nakaassign sa kanila)

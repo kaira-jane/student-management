@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="eng" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Add Course to Curriculum</title>
+	
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" th:href="@{/css/navbar.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/admin-panel.css}">
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">	
+	
+	<style>
+		.form-container {
+			max-width: 600px;
+			margin: 0 auto;
+			padding: 20px;
+			background: white;
+			border-radius: 8px;
+			box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+		}
+		
+		.form-group {
+			margin-bottom: 20px;
+		}
+		
+		.form-group label {
+			display: block;
+			margin-bottom: 5px;
+			font-weight: bold;
+			color: #333;
+		}
+		
+		.form-group select, .form-group input {
+			width: 100%;
+			padding: 10px;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			font-size: 14px;
+		}
+		
+		.form-group .checkbox-group {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+		
+		.form-group .checkbox-group input[type="checkbox"] {
+			width: auto;
+		}
+		
+		.curriculum-info {
+			background: #f8f9fa;
+			padding: 15px;
+			border-radius: 8px;
+			margin-bottom: 20px;
+		}
+		
+		.curriculum-info h4 {
+			margin: 0 0 10px 0;
+			color: #333;
+		}
+		
+		.btn-group {
+			display: flex;
+			gap: 10px;
+			justify-content: flex-end;
+			margin-top: 20px;
+		}
+		
+		.btn {
+			padding: 10px 20px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 14px;
+			text-decoration: none;
+			display: inline-block;
+			text-align: center;
+		}
+		
+		.btn-primary {
+			background-color: #1976d2;
+			color: white;
+		}
+		
+		.btn-secondary {
+			background-color: #6c757d;
+			color: white;
+		}
+		
+		.btn:hover {
+			opacity: 0.9;
+		}
+		
+		.no-courses {
+			text-align: center;
+			padding: 40px;
+			color: #666;
+		}
+	</style>
+</head>
+
+<body>
+	
+	<nav>
+		<div class="nav-brand-container">
+        	<img th:src="@{/images/pup_san_pedro_logo.png}" alt="PUP San Pedro Campus Logo" class="nav-logo">
+			<h1>PUP STUDENT MANAGEMENT</h1>
+		</div>	
+		<ul>
+			<li>								
+				<a><i class="fa fa-user-circle"></i>Admin</a>
+				<ul class="dropdown">
+					<li>										
+						<form action="#" th:action="@{/logout}" method="POST">	
+							<input type="submit" value="Logout"></input>						
+						</form>						
+					</li>
+				</ul>
+			</li>
+		</ul>		
+	</nav>
+	
+	<div class="vertical-navbar">
+		<ul>
+			<li><a th:href="@{/admin/adminPanel}"><i class="fa fa-home fa-navbar"></i><span>Dashboard</span></a></li>
+			<li><a th:href="@{/admin/courses}"><i class="fa fa-pencil fa-navbar"></i><span>Courses</span></a></li>
+			<li><a th:href="@{/admin/students}"><i class="fa fa-user fa-navbar"></i><span>Students</span></a></li>
+			<li><a th:href="@{/admin/teachers}"><i class="fa fa-user-secret fa-navbar"></i><span>Teachers</span></a></li>
+			<li><a th:href="@{/admin/curriculum/list}" class="active"><i class="fa fa-graduation-cap fa-navbar"></i><span>Curriculums</span></a></li>
+            <li><a th:href="@{/admin/section/list}"><i class="fa fa-users fa-navbar"></i><span>Sections</span></a></li>
+			<li><a th:href="@{/admin/enrollment/requests}"><i class="fa fa-clipboard-list fa-navbar"></i><span>Enrollment Requests</span></a></li>
+			<li><a th:href="@{/admin/adminInfo}"><i class="fa fa-info-circle fa-navbar"></i><span>Info</span></a></li>
+		</ul>
+	</div>
+	
+	<div class="content">
+		<h3 class="main-dashboard-heading">Add Course to Curriculum</h3>
+    	<p class="dashboard-description">Select a course to add to this curriculum</p>
+		
+		<div class="curriculum-info">
+			<h4 th:text="${curriculum.name} + ' (' + ${curriculum.code} + ')'"></h4>
+		</div>
+		
+		<div th:if="${availableCourses.size() == 0}" class="no-courses">
+			<i class="fa fa-info-circle fa-3x" style="color: #ccc; margin-bottom: 20px;"></i>
+			<h4>No Available Courses</h4>
+			<p>All courses have already been added to this curriculum.</p>
+			<a th:href="@{/admin/curriculum/{curriculumId}/courses(curriculumId=${curriculum.id})}" class="btn btn-secondary">
+				<i class="fa fa-arrow-left"></i> Back to Curriculum Courses
+			</a>
+		</div>
+		
+		<div th:if="${availableCourses.size() > 0}" class="form-container">
+			<form th:action="@{/admin/curriculum/{curriculumId}/saveCourse(curriculumId=${curriculum.id})}" method="POST">
+				
+				<div class="form-group">
+					<label for="courseId">Select Course *</label>
+					<select id="courseId" name="courseId" required>
+						<option value="">-- Select a Course --</option>
+						<option th:each="course : ${availableCourses}"
+								th:value="${course.id}"
+								th:text="${course.code + ' - ' + course.name + ' (Teacher: ' + course.teacher.firstName + ' ' + course.teacher.lastName + ')'}">
+						</option>
+					</select>
+				</div>
+				
+				<div class="form-group">
+					<label for="yearLevel">Year Level *</label>
+					<select id="yearLevel" name="yearLevel" required>
+						<option value="">-- Select Year Level --</option>
+						<option value="1">1st Year</option>
+						<option value="2">2nd Year</option>
+						<option value="3">3rd Year</option>
+						<option value="4">4th Year</option>
+					</select>
+				</div>
+				
+				<div class="form-group">
+					<label for="semester">Semester *</label>
+					<select id="semester" name="semester" required>
+						<option value="">-- Select Semester --</option>
+						<option value="1">1st Semester</option>
+						<option value="2">2nd Semester</option>
+						<option value="3">Summer</option>
+					</select>
+				</div>
+				
+				<div class="form-group">
+					<div class="checkbox-group">
+						<input type="checkbox" id="isRequired" name="isRequired" value="true">
+						<label for="isRequired">Required Course</label>
+					</div>
+					<small style="color: #666; margin-top: 5px; display: block;">
+						Check this if the course is required for the curriculum. Uncheck for elective courses.
+					</small>
+				</div>
+				
+				<div class="btn-group">
+					<a th:href="@{/admin/curriculum/{curriculumId}/courses(curriculumId=${curriculum.id})}" class="btn btn-secondary">Cancel</a>
+					<button type="submit" class="btn btn-primary">
+						<i class="fa fa-plus"></i> Add Course to Curriculum
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+
+</html> 

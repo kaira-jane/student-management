@@ -59,11 +59,21 @@
 	
 	<div class="form-input-item">
 		User role:   
-		<select th:name="role">
+		<select th:name="role" id="roleSelect" onchange="toggleCurriculumField()">
 			<option th:value="'ROLE_STUDENT'" th:text="Student"></option>
     		<option th:value="'ROLE_TEACHER'" th:text="Teacher"></option>
 		</select> 
-		
+	</div>
+	
+	<div class="form-input-item" id="curriculumField" style="display: none;">
+		Curriculum:   
+		<select th:name="curriculumId">
+			<option value="">-- Select Curriculum --</option>
+			<option th:each="curriculum : ${curriculums}"
+					th:value="${curriculum.id}"
+					th:text="${curriculum.code + ' - ' + curriculum.name}">
+			</option>
+		</select> 
 	</div>
 	
 	 
@@ -81,6 +91,24 @@
 	</div>
 	
 	<div class="bottom"> </div>
+
+	<script>
+		function toggleCurriculumField() {
+			const roleSelect = document.getElementById('roleSelect');
+			const curriculumField = document.getElementById('curriculumField');
+			
+			if (roleSelect.value === 'ROLE_STUDENT') {
+				curriculumField.style.display = 'block';
+			} else {
+				curriculumField.style.display = 'none';
+			}
+		}
+		
+		// Initialize on page load
+		document.addEventListener('DOMContentLoaded', function() {
+			toggleCurriculumField();
+		});
+	</script>
 
 </body>
 

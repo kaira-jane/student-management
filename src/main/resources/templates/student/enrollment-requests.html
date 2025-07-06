@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="eng" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>My Enrollment Requests</title>
+    
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" th:href="@{/css/student/student-navbar.css}">
+	
+	<link rel="stylesheet" th:href="@{/css/student/student-courses.css}">
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+
+        
+        .main-dashboard-heading {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .dashboard-description {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background-color: #1976d2;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .no-data i {
+            font-size: 48px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        
+        .request-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #ddd;
+        }
+        
+        .request-card.pending {
+            border-left-color: #ffc107;
+        }
+        
+        .request-card.approved {
+            border-left-color: #28a745;
+        }
+        
+        .request-card.rejected {
+            border-left-color: #dc3545;
+        }
+        
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .request-info h4 {
+            margin: 0 0 5px 0;
+            color: #333;
+        }
+        
+        .course-code {
+            color: #1976d2;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .request-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-approved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .request-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .detail-item {
+            font-size: 14px;
+        }
+        
+        .detail-item strong {
+            color: #333;
+        }
+        
+        .detail-item span {
+            color: #666;
+        }
+        
+        .request-notes {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        
+        .request-notes strong {
+            color: #333;
+        }
+        
+        .request-actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-brand-container">
+            <img th:src="@{/images/pup_san_pedro_logo.png}" alt="PUP San Pedro Campus Logo" class="nav-logo">
+            <h1>PUP STUDENT MANAGEMENT</h1>
+        </div>	
+        <ul>
+            <li>								
+                <a><i class="fa fa-user-circle"></i><span th:text="${student.firstName}"></span></a>
+                <ul class="dropdown">
+                    <li>										
+                        <form action="#" th:action="@{/logout}" method="POST">	
+                            <input type="submit" value="Logout"></input>						
+                        </form>						
+                    </li>
+                </ul>
+            </li>
+        </ul>		
+    </nav>
+    
+    <div class="content">
+        <h3 class="main-dashboard-heading">My Enrollment Requests</h3>
+        <p class="dashboard-description">Track the status of your course enrollment requests</p>
+        
+        <div th:if="${success}" class="success-message" th:text="${success}"></div>
+        <div th:if="${error}" class="error-message" th:text="${error}"></div>
+        
+        <div class="action-buttons">
+            <a th:href="@{/student/enrollment/{studentId}/available-courses(studentId=${student.id})}" class="btn btn-primary">
+                <i class="fa fa-plus"></i> Enroll in New Course
+            </a>
+            <a th:href="@{/student/{studentId}/courses(studentId=${student.id})}" class="btn btn-secondary">
+                <i class="fa fa-graduation-cap"></i> My Enrolled Courses
+            </a>
+        </div>
+        
+        <div th:if="${enrollmentRequests.size() == 0}" class="no-data">
+            <i class="fa fa-inbox"></i>
+            <h4>No Enrollment Requests</h4>
+            <p>You haven't submitted any enrollment requests yet.</p>
+            <a th:href="@{/student/enrollment/{studentId}/available-courses(studentId=${student.id})}" class="btn btn-primary">
+                Browse Available Courses
+            </a>
+        </div>
+        
+        <div th:if="${enrollmentRequests.size() > 0}">
+            <div th:each="request : ${enrollmentRequests}" 
+                 th:class="${'request-card ' + request.status.name().toLowerCase()}">
+                
+                <div class="request-header">
+                    <div class="request-info">
+                        <div class="course-code" th:text="${request.course.code}"></div>
+                        <h4 th:text="${request.course.name}"></h4>
+                    </div>
+                    <span th:class="${'request-status status-' + request.status.name().toLowerCase()}" 
+                          th:text="${request.status.name()}"></span>
+                </div>
+                
+                <div class="request-details">
+                    <div class="detail-item">
+                        <strong>Teacher:</strong>
+                        <span th:text="${request.course.teacher.firstName + ' ' + request.course.teacher.lastName}"></span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Year Level:</strong>
+                        <span th:text="${request.curriculumCourse.yearLevel + 'st Year'}"></span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Semester:</strong>
+                        <span th:text="${request.curriculumCourse.semester + 'st Semester'}"></span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Type:</strong>
+                        <span th:if="${request.curriculumCourse.required}" style="color: #dc3545;">Required</span>
+                        <span th:unless="${request.curriculumCourse.required}" style="color: #6c757d;">Elective</span>
+                    </div>
+                    <div style="font-size: 12px; color: #666; margin-top: 5px;">
+                        <strong>Requested:</strong> 
+                        <span th:text="${#dates.format(request.requestDate, 'MMM dd, yyyy HH:mm')}"></span>
+                    </div>
+                    <div th:if="${request.processedDate}" style="font-size: 12px; color: #666; margin-top: 5px;">
+                        <strong>Processed:</strong> 
+                        <span th:text="${#dates.format(request.processedDate, 'MMM dd, yyyy HH:mm')}"></span>
+                    </div>
+                    <div th:if="${request.processedBy}" class="detail-item">
+                        <strong>Processed By:</strong>
+                        <span th:text="${request.processedBy.firstName + ' ' + request.processedBy.lastName}"></span>
+                    </div>
+                </div>
+                
+                <div th:if="${request.notes}" class="request-notes">
+                    <strong>Admin Notes:</strong>
+                    <span th:text="${request.notes}"></span>
+                </div>
+                
+                <div th:if="${request.status.name() == 'PENDING'}" class="request-actions">
+                    <form th:action="@{/student/enrollment/{studentId}/cancel-request(studentId=${student.id})}" 
+                          method="POST" style="display: inline;">
+                        <input type="hidden" name="requestId" th:value="${request.id}">
+                        <button type="submit" class="btn btn-danger btn-small" 
+                                onclick="return confirm('Are you sure you want to cancel this enrollment request?')">
+                            <i class="fa fa-times"></i> Cancel Request
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html> 

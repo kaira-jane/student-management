@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="eng" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Assign Student to Section</title>
+    
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" th:href="@{/css/navbar.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/admin-panel.css}">
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">	
+    
+    <style>
+
+        .student-info {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .student-info h3 {
+            margin: 0 0 15px 0;
+            color: #1976d2;
+        }
+        
+        .student-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .detail-item {
+            font-size: 14px;
+        }
+        
+        .detail-item strong {
+            color: #333;
+        }
+        
+        .detail-item span {
+            color: #666;
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: white;
+        }
+        
+        .form-group select:focus {
+            outline: none;
+            border-color: #1976d2;
+            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+        }
+        
+        .section-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+        
+        .section-info {
+            flex: 1;
+        }
+        
+        .section-capacity {
+            font-size: 12px;
+            color: #666;
+            margin-left: 10px;
+        }
+        
+        .section-full {
+            color: #dc3545;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: opacity 0.2s;
+        }
+        
+        .btn-primary {
+            background-color: #1976d2;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+        }
+        
+        .required {
+            color: #dc3545;
+        }
+        
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-brand-container">
+            <img th:src="@{/images/pup_san_pedro_logo.png}" alt="PUP San Pedro Campus Logo" class="nav-logo">
+            <h1>PUP STUDENT MANAGEMENT</h1>
+        </div>	
+        <ul>
+            <li>								
+                <a><i class="fa fa-user-circle"></i>Admin</a>
+                <ul class="dropdown">
+                    <li>										
+                        <form action="#" th:action="@{/logout}" method="POST">	
+                            <input type="submit" value="Logout"></input>						
+                        </form>						
+                    </li>
+                </ul>
+            </li>
+        </ul>		
+    </nav>
+    
+    <div class="vertical-navbar">
+        <ul>
+			<li><a th:href="@{/admin/adminPanel}"><i class="fa fa-home fa-navbar"></i><span>Dashboard</span></a></li>
+			<li><a th:href="@{/admin/courses}"><i class="fa fa-pencil fa-navbar"></i><span>Courses</span></a></li>
+			<li><a th:href="@{/admin/students}" class="active"><i class="fa fa-user fa-navbar"></i><span>Students</span></a></li>
+			<li><a th:href="@{/admin/teachers}"><i class="fa fa-user-secret fa-navbar"></i><span>Teachers</span></a></li>
+			<li><a th:href="@{/admin/curriculum/list}"><i class="fa fa-graduation-cap fa-navbar"></i><span>Curriculums</span></a></li>
+            <li><a th:href="@{/admin/section/list}"><i class="fa fa-users fa-navbar"></i><span>Sections</span></a></li>
+			<li><a th:href="@{/admin/enrollment/requests}"><i class="fa fa-clipboard-list fa-navbar"></i><span>Enrollment Requests</span></a></li>
+			<li><a th:href="@{/admin/adminInfo}"><i class="fa fa-info-circle fa-navbar"></i><span>Info</span></a></li>
+        </ul>
+    </div>
+    
+    <div class="content">
+        <h3 class="main-dashboard-heading">Assign Student to Section</h3>
+        <p class="dashboard-description">Assign this student to an appropriate section</p>
+        
+        <div th:if="${error}" class="error-message" th:text="${error}"></div>
+        <div th:if="${success}" class="success-message" th:text="${success}"></div>
+        
+        <div class="student-info">
+            <h3 th:text="${student.firstName + ' ' + student.lastName}"></h3>
+            <div class="student-details">
+                <div class="detail-item">
+                    <strong>Student ID:</strong>
+                    <span th:text="${student.id}"></span>
+                </div>
+                <div class="detail-item">
+                    <strong>Email:</strong>
+                    <span th:text="${student.email}"></span>
+                </div>
+                <div class="detail-item">
+                    <strong>Username:</strong>
+                    <span th:text="${student.userName}"></span>
+                </div>
+                <div class="detail-item">
+                    <strong>Curriculum:</strong>
+                    <span th:text="${student.curriculum.code + ' - ' + student.curriculum.name}"></span>
+                </div>
+                <div class="detail-item" th:if="${student.section}">
+                    <strong>Current Section:</strong>
+                    <span th:text="${student.section.name}"></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-container">
+            <form th:action="@{/admin/student-section/assign/{studentId}(studentId=${student.id})}" method="POST">
+                
+                <div class="form-group">
+                    <label for="sectionId">Select Section <span class="required">*</span></label>
+                    <select id="sectionId" name="sectionId" required>
+                        <option value="">-- Select Section --</option>
+                        <option th:each="section : ${availableSections}" 
+                                th:value="${section.id}" 
+                                th:disabled="${section.full}"
+                                th:text="${section.name + ' (' + section.currentEnrollment + '/' + section.capacity + ')' + (section.full ? ' - FULL' : '')}"></option>
+                    </select>
+                </div>
+                
+                <div class="btn-group">
+                    <a th:href="@{/admin/students}" class="btn btn-secondary">
+                        <i class="fa fa-times"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-user-plus"></i> Assign to Section
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Show warning if section is full
+        document.getElementById('sectionId').addEventListener('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
+            if (selectedOption.text.includes('FULL')) {
+                if (!confirm('This section is full. Are you sure you want to assign the student to this section?')) {
+                    this.value = '';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html> 

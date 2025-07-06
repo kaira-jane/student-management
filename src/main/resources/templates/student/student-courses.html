@@ -57,14 +57,28 @@
 	</nav>
 	
 	<div class="vertical-navbar">
+		<ul>
+			<li><a th:href="@{/student/{studentId}/schedule(studentId=${student.id})}"><i class="fa fa-calendar fa-navbar"></i><span>My Schedule</span></a></li>
+		</ul>
 		<ul th:each="course : ${courses}">
 			<li><a th:href="@{/student/{studentId}/courses/{courseId}(studentId=${student.id}, courseId=${course.id})}"><i class="fa fa-tag fa-navbar"></i><span th:text="${course.code}"></span></a></li>
 		</ul>
 	</div>
 	
-	<<div class="content">
+	<div class="content">
 		<h3 class="main-dashboard-heading">Courses</h3>
     	<p class="dashboard-description">Courses enrolled this semester</p>
+		
+		<div class="enrollment-actions" style="margin-bottom: 20px; display: flex; gap: 10px;">
+			<a th:href="@{/student/enrollment/{studentId}/available-courses(studentId=${student.id})}" 
+			   style="background-color: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-size: 14px;">
+				<i class="fa fa-plus"></i> Enroll in New Course
+			</a>
+			<a th:href="@{/student/enrollment/{studentId}/requests(studentId=${student.id})}" 
+			   style="background-color: #17a2b8; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; font-size: 14px;">
+				<i class="fa fa-list"></i> My Enrollment Requests
+			</a>
+		</div>
 	
 	<div th:if="${courses.size() == 0}">There are no courses assigned.</div>
 	

@@ -19,48 +19,50 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="student")
+@Table(name = "student")
 public class Student {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	@Column(name="username")
+
+	@Column(name = "username")
 	private String userName;
-	
-	@Column(name="password")
+
+	@Column(name = "password")
 	private String password;
-	
-	@Column(name="first_name")
+
+	@Column(name = "first_name")
 	private String firstName;
-	
-	@Column(name="last_name")
+
+	@Column(name = "last_name")
 	private String lastName;
-	
-	@Column(name="email")
+
+	@Column(name = "email")
 	private String email;
-	
-	
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="role_id")
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "role_id")
 	private Role role;
-		
-	
-	@ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name="student_course_details",
-				joinColumns = @JoinColumn(name="student_id"),
-				inverseJoinColumns = @JoinColumn(name="course_id"))			
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "curriculum_id")
+	private Curriculum curriculum;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "section_id")
+	private Section section;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "student_course_details", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
 	private List<Course> courses;
-	
+
 	public Student() {
-		
+
 	}
 
-	
-	
 	public Student(int id, String userName, String password, String firstName, String lastName, String email,
-			 Role role, List<Course> courses) {
+			Role role, List<Course> courses) {
 		this.id = id;
 		this.userName = userName;
 		this.password = password;
@@ -71,10 +73,8 @@ public class Student {
 		this.courses = courses;
 	}
 
-
-
 	public void addCourse(Course course) {
-		if(courses == null) {
+		if (courses == null) {
 			courses = new ArrayList<>();
 		}
 		courses.add(course);
@@ -127,7 +127,6 @@ public class Student {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-		
 
 	public Role getRole() {
 		return role;
@@ -137,6 +136,22 @@ public class Student {
 		this.role = role;
 	}
 
+	public Curriculum getCurriculum() {
+		return curriculum;
+	}
+
+	public void setCurriculum(Curriculum curriculum) {
+		this.curriculum = curriculum;
+	}
+
+	public Section getSection() {
+		return section;
+	}
+
+	public void setSection(Section section) {
+		this.section = section;
+	}
+
 	public List<Course> getCourses() {
 		return courses;
 	}
@@ -144,29 +159,27 @@ public class Student {
 	public void setCourses(List<Course> courses) {
 		this.courses = courses;
 	}
-	
+
 	public void removeCourse(Course course) {
 		courses.remove(course);
 	}
-	
+
 	public boolean equals(Object comparedObject) {
-	    if (this == comparedObject) {
-	        return true;
-	    }
+		if (this == comparedObject) {
+			return true;
+		}
 
-	   if (!(comparedObject instanceof Student)) {
-	        return false;
-	    }
+		if (!(comparedObject instanceof Student)) {
+			return false;
+		}
 
-	    Student comparedStudent = (Student) comparedObject;
+		Student comparedStudent = (Student) comparedObject;
 
-	    if (this.id == comparedStudent.id) {
-	        return true;
-	    }
+		if (this.id == comparedStudent.id) {
+			return true;
+		}
 
-	    return false;
+		return false;
 	}
-	
-	
-	
+
 }

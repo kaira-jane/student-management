@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="eng" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Assign Curriculum</title>
+    
+	<!-- fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" th:href="@{/css/navbar.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/admin-panel.css}">
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">	
+    
+    <style>
+
+        .student-info {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #1976d2;
+        }
+        
+        .student-info h4 {
+            margin: 0 0 10px 0;
+            color: #1976d2;
+        }
+        
+        .student-info p {
+            margin: 5px 0;
+            color: #666;
+        }
+        
+        .current-curriculum {
+            background-color: #e8f5e8;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid #28a745;
+        }
+        
+        .current-curriculum h5 {
+            margin: 0 0 10px 0;
+            color: #28a745;
+        }
+        
+        .no-curriculum {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .no-curriculum h5 {
+            margin: 0 0 10px 0;
+            color: #856404;
+        }
+        
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: white;
+        }
+        
+        .form-group select:focus {
+            outline: none;
+            border-color: #1976d2;
+            box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: opacity 0.2s;
+        }
+        
+        .btn-primary {
+            background-color: #1976d2;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+        }
+        
+        .curriculum-list {
+            margin-top: 20px;
+        }
+        
+        .curriculum-item {
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border-left: 3px solid #1976d2;
+        }
+        
+        .curriculum-item h5 {
+            margin: 0 0 5px 0;
+            color: #1976d2;
+        }
+        
+        .curriculum-item p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .curriculum-code {
+            font-weight: 600;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-brand-container">
+            <img th:src="@{/images/pup_san_pedro_logo.png}" alt="PUP San Pedro Campus Logo" class="nav-logo">
+            <h1>PUP STUDENT MANAGEMENT</h1>
+        </div>	
+        <ul>
+            <li>								
+                <a><i class="fa fa-user-circle"></i>Admin</a>
+                <ul class="dropdown">
+                    <li>										
+                        <form action="#" th:action="@{/logout}" method="POST">	
+                            <input type="submit" value="Logout"></input>						
+                        </form>						
+                    </li>
+                </ul>
+            </li>
+        </ul>		
+    </nav>
+    
+    <div class="vertical-navbar">
+        <ul>
+			<li><a th:href="@{/admin/adminPanel}"><i class="fa fa-home fa-navbar"></i><span>Dashboard</span></a></li>
+			<li><a th:href="@{/admin/courses}"><i class="fa fa-pencil fa-navbar"></i><span>Courses</span></a></li>
+			<li><a th:href="@{/admin/students}" class="active"><i class="fa fa-user fa-navbar"></i><span>Students</span></a></li>
+			<li><a th:href="@{/admin/teachers}"><i class="fa fa-user-secret fa-navbar"></i><span>Teachers</span></a></li>
+			<li><a th:href="@{/admin/curriculum/list}"><i class="fa fa-graduation-cap fa-navbar"></i><span>Curriculums</span></a></li>
+            <li><a th:href="@{/admin/section/list}"><i class="fa fa-users fa-navbar"></i><span>Sections</span></a></li>
+			<li><a th:href="@{/admin/enrollment/requests}"><i class="fa fa-clipboard-list fa-navbar"></i><span>Enrollment Requests</span></a></li>
+			<li><a th:href="@{/admin/adminInfo}"><i class="fa fa-info-circle fa-navbar"></i><span>Info</span></a></li>
+        </ul>
+    </div>
+    
+    <div class="content">
+        <h3 class="main-dashboard-heading">Assign Curriculum to Student</h3>
+        <p class="dashboard-description">Assign or change the curriculum for this student</p>
+        
+        <div class="student-info">
+            <h4><i class="fa fa-user"></i> Student Information</h4>
+            <p><strong>Name:</strong> <span th:text="${student.firstName + ' ' + student.lastName}"></span></p>
+            <p><strong>Student ID:</strong> <span th:text="${student.id}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${student.email}"></span></p>
+            <p><strong>Username:</strong> <span th:text="${student.userName}"></span></p>
+        </div>
+        
+        <div th:if="${student.curriculum != null}" class="current-curriculum">
+            <h5><i class="fa fa-graduation-cap"></i> Current Curriculum</h5>
+            <p><strong>Code:</strong> <span class="curriculum-code" th:text="${student.curriculum.code}"></span></p>
+            <p><strong>Name:</strong> <span th:text="${student.curriculum.name}"></span></p>
+            <p th:if="${student.curriculum.description}"><strong>Description:</strong> <span th:text="${student.curriculum.description}"></span></p>
+            <p><strong>Status:</strong> 
+                <span th:if="${student.curriculum.active}" style="color: #28a745;">Active</span>
+                <span th:unless="${student.curriculum.active}" style="color: #dc3545;">Inactive</span>
+            </p>
+        </div>
+        
+        <div th:if="${student.curriculum == null}" class="no-curriculum">
+            <h5><i class="fa fa-exclamation-triangle"></i> No Curriculum Assigned</h5>
+            <p>This student does not have a curriculum assigned. Please assign one below.</p>
+        </div>
+        
+        <div class="form-container">
+            <div th:if="${student.curriculum != null}">
+                <h4><i class="fa fa-times-circle"></i> Remove Current Curriculum</h4>
+                <p>Click the button below to remove the current curriculum assignment:</p>
+                <form th:action="@{/admin/students/{studentId}/remove-curriculum(studentId=${student.id})}" method="POST" style="margin-bottom: 30px;">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to remove the curriculum from this student?')">
+                        <i class="fa fa-times"></i> Remove Curriculum
+                    </button>
+                </form>
+            </div>
+            
+            <div th:if="${curriculums.size() > 0}">
+                <h4><i class="fa fa-plus-circle"></i> Assign New Curriculum</h4>
+                <p>Select a curriculum to assign to this student:</p>
+                
+                <form th:action="@{/admin/students/{studentId}/assign-curriculum(studentId=${student.id})}" method="POST">
+                    <div class="form-group">
+                        <label for="curriculumId">Select Curriculum *</label>
+                        <select id="curriculumId" name="curriculumId" required>
+                            <option value="">-- Select a Curriculum --</option>
+                            <option th:each="curriculum : ${curriculums}"
+                                    th:value="${curriculum.id}"
+                                    th:text="${curriculum.code + ' - ' + curriculum.name + ' (' + (curriculum.active ? 'Active' : 'Inactive') + ')'}">
+                            </option>
+                        </select>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <a th:href="@{/admin/students}" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left"></i> Back to Students
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i> Assign Curriculum
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div th:if="${curriculums.size() == 0}" class="no-curriculum">
+                <h5><i class="fa fa-info-circle"></i> No Curriculums Available</h5>
+                <p>There are no curriculums available to assign. Please create curriculums first.</p>
+                <a th:href="@{/admin/curriculum/showForm}" class="btn btn-primary">
+                    <i class="fa fa-plus"></i> Create Curriculum
+                </a>
+            </div>
+        </div>
+        
+        <div th:if="${curriculums.size() > 0}" class="curriculum-list">
+            <h4><i class="fa fa-list"></i> Available Curriculums</h4>
+            <div th:each="curriculum : ${curriculums}" class="curriculum-item">
+                <h5 th:text="${curriculum.code + ' - ' + curriculum.name}"></h5>
+                <p th:if="${curriculum.description}" th:text="${curriculum.description}"></p>
+                <p><strong>Status:</strong> 
+                    <span th:if="${curriculum.active}" style="color: #28a745;">Active</span>
+                    <span th:unless="${curriculum.active}" style="color: #dc3545;">Inactive</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html> 

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="eng" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Curriculum Courses</title>
+	
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" th:href="@{/css/navbar.css}">
+	<link rel="stylesheet" th:href="@{/css/table.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/admin-panel.css}">
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">	
+	
+	<style>
+		.curriculum-info {
+			background: #f8f9fa;
+			padding: 20px;
+			border-radius: 8px;
+			margin-bottom: 20px;
+		}
+		
+		.curriculum-info h4 {
+			margin: 0 0 10px 0;
+			color: #333;
+		}
+		
+		.curriculum-info p {
+			margin: 5px 0;
+			color: #666;
+		}
+		
+		.action-buttons {
+			margin-bottom: 20px;
+		}
+		
+		.btn {
+			padding: 8px 16px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 14px;
+			text-decoration: none;
+			display: inline-block;
+			margin-right: 10px;
+		}
+		
+		.btn-primary {
+			background-color: #1976d2;
+			color: white;
+		}
+		
+		.btn-small {
+			padding: 4px 8px;
+			font-size: 12px;
+		}
+		
+		.btn-info {
+			background-color: #17a2b8;
+			color: white;
+		}
+		
+		.btn-danger {
+			background-color: #dc3545;
+			color: white;
+		}
+		
+		.status-required {
+			background-color: #28a745;
+			color: white;
+			padding: 2px 8px;
+			border-radius: 12px;
+			font-size: 12px;
+		}
+		
+		.status-elective {
+			background-color: #ffc107;
+			color: #212529;
+			padding: 2px 8px;
+			border-radius: 12px;
+			font-size: 12px;
+		}
+	</style>
+</head>
+
+<body>
+	
+	<nav>
+		<div class="nav-brand-container">
+        	<img th:src="@{/images/pup_san_pedro_logo.png}" alt="PUP San Pedro Campus Logo" class="nav-logo">
+			<h1>PUP STUDENT MANAGEMENT</h1>
+		</div>	
+		<ul>
+			<li>								
+				<a><i class="fa fa-user-circle"></i>Admin</a>
+				<ul class="dropdown">
+					<li>										
+						<form action="#" th:action="@{/logout}" method="POST">	
+							<input type="submit" value="Logout"></input>						
+						</form>						
+					</li>
+				</ul>
+			</li>
+		</ul>		
+	</nav>
+	
+	<div class="vertical-navbar">
+		<ul>
+			<li><a th:href="@{/admin/adminPanel}"><i class="fa fa-home fa-navbar"></i><span>Dashboard</span></a></li>
+			<li><a th:href="@{/admin/courses}"><i class="fa fa-pencil fa-navbar"></i><span>Courses</span></a></li>
+			<li><a th:href="@{/admin/students}"><i class="fa fa-user fa-navbar"></i><span>Students</span></a></li>
+			<li><a th:href="@{/admin/teachers}"><i class="fa fa-user-secret fa-navbar"></i><span>Teachers</span></a></li>
+			<li><a th:href="@{/admin/curriculum/list}" class="active"><i class="fa fa-graduation-cap fa-navbar"></i><span>Curriculums</span></a></li>
+            <li><a th:href="@{/admin/section/list}"><i class="fa fa-users fa-navbar"></i><span>Sections</span></a></li>
+			<li><a th:href="@{/admin/enrollment/requests}"><i class="fa fa-clipboard-list fa-navbar"></i><span>Enrollment Requests</span></a></li>
+			<li><a th:href="@{/admin/adminInfo}"><i class="fa fa-info-circle fa-navbar"></i><span>Info</span></a></li>
+		</ul>
+	</div>
+	
+	<div class="content">
+		<h3 class="main-dashboard-heading">Curriculum Courses</h3>
+    	<p class="dashboard-description">Manage courses for this curriculum</p>
+		
+		<div class="curriculum-info">
+			<h4 th:text="${curriculum.name} + ' (' + ${curriculum.code} + ')'"></h4>
+			<p th:if="${curriculum.description}" th:text="${curriculum.description}"></p>
+			<p><strong>Status:</strong> 
+				<span th:if="${curriculum.active}" style="color: #28a745;">Active</span>
+				<span th:unless="${curriculum.active}" style="color: #dc3545;">Inactive</span>
+			</p>
+		</div>
+		
+		<div class="action-buttons">
+			<a th:href="@{/admin/curriculum/{curriculumId}/addCourse(curriculumId=${curriculum.id})}" class="btn btn-primary">
+				<i class="fa fa-plus"></i> Add Course to Curriculum
+			</a>
+			<a th:href="@{/admin/curriculum/list}" class="btn btn-secondary">
+				<i class="fa fa-arrow-left"></i> Back to Curriculums
+			</a>
+		</div>
+		
+		<div th:if="${curriculumCourses.size() == 0}" class="no-data">
+			<p>No courses assigned to this curriculum yet. Add your first course!</p>
+		</div>
+		
+		<div th:if="${curriculumCourses.size() > 0}">
+			<table>
+				<thead>
+					<tr>
+						<th id="table-top-left">Course Code</th>
+						<th>Course Name</th>
+						<th>Teacher</th>
+						<th>Year Level</th>
+						<th>Semester</th>
+						<th>Type</th>
+						<th id="table-top-right">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="curriculumCourse : ${curriculumCourses}">
+						<td th:text="${curriculumCourse.course.code}"></td>
+						<td th:text="${curriculumCourse.course.name}"></td>
+						<td th:text="${curriculumCourse.course.teacher.firstName + ' ' + curriculumCourse.course.teacher.lastName}"></td>
+						<td th:text="${curriculumCourse.yearLevel + 'st Year'}"></td>
+						<td th:text="${curriculumCourse.semester + 'st Semester'}"></td>
+						<td>
+							<span th:if="${curriculumCourse.required}" class="status-required">Required</span>
+							<span th:unless="${curriculumCourse.required}" class="status-elective">Elective</span>
+						</td>
+						<td>
+							<a th:href="@{/admin/curriculum/{curriculumId}/courses/delete(curriculumId=${curriculum.id}, curriculumCourseId=${curriculumCourse.id})}" 
+							   class="btn btn-small btn-danger" title="Remove from Curriculum"
+							   onclick="return confirm('Are you sure you want to remove this course from the curriculum?')">
+								<i class="fa fa-trash"></i>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+
+</html> 

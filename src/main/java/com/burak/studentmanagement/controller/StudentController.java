@@ -21,93 +21,110 @@ import com.burak.studentmanagement.service.AssignmentDetailsService;
 import com.burak.studentmanagement.service.StudentCourseDetailsService;
 import com.burak.studentmanagement.service.StudentService;
 
-
 @Controller
 @RequestMapping("/student")
 public class StudentController {
-	
+
 	@Autowired
 	private StudentService studentService;
-	
+
 	@Autowired
 	private CourseService courseService;
-	
-	
+
 	@Autowired
 	private StudentCourseDetailsService studentCourseDetailsService;
-	
+
 	@Autowired
 	private AssignmentDetailsService assignmentDetailsService;
-	
+
 	@GetMapping("/{studentId}/courses")
 	public String showStudentPanel(@PathVariable("studentId") int studentId, Model theModel) {
-		Student student = studentService.findByStudentId(studentId); //accessing student logged in
+		Student student = studentService.findByStudentIdWithCourses(studentId); // accessing student logged in
 		List<Course> courses = student.getCourses();
-		
+
 		theModel.addAttribute("student", student);
 		theModel.addAttribute("courses", courses);
 		return "student/student-courses";
 	}
-	
+
 	@GetMapping("/{studentId}/courses/{courseId}")
-	public String showStudentCourse(@PathVariable("studentId") int studentId, @PathVariable("courseId") int courseId, Model theModel) {
-		Student student = studentService.findByStudentId(studentId);
+	public String showStudentCourse(@PathVariable("studentId") int studentId, @PathVariable("courseId") int courseId,
+			Model theModel) {
+		Student student = studentService.findByStudentIdWithCourses(studentId);
 		List<Course> courses = student.getCourses();
 		Course course = courseService.findCourseById(courseId);
-		StudentCourseDetails studentCourseDetails = studentCourseDetailsService.findByStudentAndCourseId(studentId, courseId);
+		StudentCourseDetails studentCourseDetails = studentCourseDetailsService.findByStudentAndCourseId(studentId,
+				courseId);
 		List<Assignment> assignments = studentCourseDetails.getAssignments();
-		
-		for(Assignment assignment : assignments) { //updating days remaining using helper method defined below
+
+		for (Assignment assignment : assignments) { // updating days remaining using helper method defined below
 			int daysRemaining = findDayDifference(assignment);
 			assignment.setDaysRemaining(daysRemaining);
 		}
-		
-		
+
 		GradeDetails gradeDetails = studentCourseDetails.getGradeDetails();
-		
+
 		theModel.addAttribute("assignments", assignments);
 		theModel.addAttribute("course", course);
 		theModel.addAttribute("courses", courses);
 		theModel.addAttribute("student", student);
 		theModel.addAttribute("gradeDetails", gradeDetails);
-		
+
 		return "student/student-course-detail";
 	}
-	
+
 	@GetMapping("/{studentId}/courses/{courseId}/assignment/{assignmentId}")
-	public String showStudentAssignment(@PathVariable("studentId") int studentId, @PathVariable("courseId") int courseId, 
+	public String showStudentAssignment(@PathVariable("studentId") int studentId,
+			@PathVariable("courseId") int courseId,
 			@PathVariable("assignmentId") int assignmentId, Model theModel) {
-		Student student = studentService.findByStudentId(studentId);
+		Student student = studentService.findByStudentIdWithCourses(studentId);
 		List<Course> courses = student.getCourses();
 		Course course = courseService.findCourseById(courseId);
-		StudentCourseDetails studentCourseDetails = studentCourseDetailsService.findByStudentAndCourseId(studentId, courseId);
+		StudentCourseDetails studentCourseDetails = studentCourseDetailsService.findByStudentAndCourseId(studentId,
+				courseId);
 		Assignment assignment = studentCourseDetails.getAssignmentById(assignmentId);
-		AssignmentDetails assignmentDetails = assignmentDetailsService.findByAssignmentAndStudentCourseDetailsId(assignmentId, studentCourseDetails.getId());
-		
+		AssignmentDetails assignmentDetails = assignmentDetailsService
+				.findByAssignmentAndStudentCourseDetailsId(assignmentId, studentCourseDetails.getId());
+
 		theModel.addAttribute("assignment", assignment);
 		theModel.addAttribute("assignmentDetails", assignmentDetails);
 		theModel.addAttribute("course", course);
 		theModel.addAttribute("courses", courses);
 		theModel.addAttribute("student", student);
-		
+
 		return "student/student-assignment-detail";
 	}
-	
-	
+
 	@GetMapping("/{studentId}/courses/{courseId}/markAsCompleted/{assignmentId}")
 	public String markAsCompleted(@PathVariable("studentId") int studentId, @PathVariable("courseId") int courseId,
-									@PathVariable("assignmentId") int assignmentId, Model theModel) {
-		//Student student = studentService.findByStudentId(studentId);
-		//Course course = courseService.findCourseById(courseId);
-		StudentCourseDetails studentCourseDetails = studentCourseDetailsService.findByStudentAndCourseId(studentId, courseId);
+			@PathVariable("assignmentId") int assignmentId, Model theModel) {
+		// Student student = studentService.findByStudentId(studentId);
+		// Course course = courseService.findCourseById(courseId);
+		StudentCourseDetails studentCourseDetails = studentCourseDetailsService.findByStudentAndCourseId(studentId,
+				courseId);
 		AssignmentDetails assignmentDetails = assignmentDetailsService
-													.findByAssignmentAndStudentCourseDetailsId(assignmentId, studentCourseDetails.getId());
-		assignmentDetails.setIsDone(1); //assignment is completed
+				.findByAssignmentAndStudentCourseDetailsId(assignmentId, studentCourseDetails.getId());
+		assignmentDetails.setIsDone(1); // assignment is completed
 		assignmentDetailsService.save(assignmentDetails);
 		return "redirect:/student/" + studentId + "/courses/" + courseId + "/assignment/" + assignmentId;
 	}
-	
-	//helper method to find day difference between assignment due date and today
+
+	@GetMapping("/{studentId}/schedule")
+	public String showStudentSchedule(@PathVariable("studentId") int studentId, Model theModel) {
+		Student student = studentService.findByStudentIdWithCourses(studentId);
+		List<Course> courses = student.getCourses();
+
+		// Load schedules for each course
+		for (Course course : courses) {
+			courseService.findCourseByIdWithSchedules(course.getId());
+		}
+
+		theModel.addAttribute("student", student);
+		theModel.addAttribute("courses", courses);
+		return "student/student-schedule";
+	}
+
+	// helper method to find day difference between assignment due date and today
 	private int findDayDifference(Assignment assignment) {
 		String dateString = assignment.getDueDate();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -115,13 +132,13 @@ public class StudentController {
 			LocalDate dueDate = LocalDate.parse(dateString, dtf);
 			LocalDate today = LocalDate.now();
 			int dayDiff = (int) Duration.between(today.atStartOfDay(), dueDate.atStartOfDay()).toDays();
-			
-			return dayDiff;	
-			
+
+			return dayDiff;
+
 		} catch (Exception e) {
-			e.printStackTrace();			
+			e.printStackTrace();
 		}
-		
+
 		return -1;
 	}
 
