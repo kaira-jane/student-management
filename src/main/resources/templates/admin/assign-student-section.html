@@ -233,8 +233,8 @@
                         <option value="">-- Select Section --</option>
                         <option th:each="section : ${availableSections}" 
                                 th:value="${section.id}" 
-                                th:disabled="${section.full}"
-                                th:text="${section.name + ' (' + section.currentEnrollment + '/' + section.capacity + ')' + (section.full ? ' - FULL' : '')}"></option>
+                                th:disabled="${section.isFull()}"
+                                th:text="${section.name + ' (' + section.currentEnrollmentCount + '/' + section.capacity + ')' + (section.isFull() ? ' - FULL' : '')}"></option>
                     </select>
                 </div>
                 

@@ -24,7 +24,11 @@ public interface SectionService {
 
     public List<Section> findByActive(boolean isActive);
 
+    public List<Section> findByActiveWithStudents(boolean isActive);
+
     public void deleteById(int id);
 
     public Section findByName(String name);
+
+    public int getCurrentEnrollmentCount(int sectionId);
 }

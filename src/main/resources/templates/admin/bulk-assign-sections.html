@@ -198,8 +198,8 @@
                         <option value="">-- Select Section --</option>
                         <option th:each="section : ${sections}" 
                                 th:value="${section.id}" 
-                                th:disabled="${section.full}"
-                                th:text="${section.name + ' (' + section.curriculum.code + ' - Year ' + section.yearLevel + ', Sem ' + section.semester + ') - (' + section.currentEnrollment + '/' + section.capacity + ')' + (section.full ? ' - FULL' : '')}"></option>
+                                th:disabled="${section.isFull()}"
+                                th:text="${section.name + ' (' + section.curriculum.code + ' - Year ' + section.yearLevel + ', Sem ' + section.semester + ') - (' + section.currentEnrollmentCount + '/' + section.capacity + ')' + (section.isFull() ? ' - FULL' : '')}"></option>
                     </select>
                 </div>
                 

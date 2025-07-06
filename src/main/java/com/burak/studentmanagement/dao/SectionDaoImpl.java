@@ -52,6 +52,15 @@ public class SectionDaoImpl implements SectionDao {
     }
 
     @Override
+    public List<Section> findAllWithStudents() {
+        Session session = entityManager.unwrap(Session.class);
+        Query<Section> theQuery = session.createQuery(
+                "from Section s left join fetch s.students order by s.curriculum.code, s.yearLevel, s.semester, s.name",
+                Section.class);
+        return theQuery.getResultList();
+    }
+
+    @Override
     public List<Section> findByCurriculumId(int curriculumId) {
         Session session = entityManager.unwrap(Session.class);
         Query<Section> theQuery = session.createQuery(
@@ -103,6 +112,16 @@ public class SectionDaoImpl implements SectionDao {
     }
 
     @Override
+    public List<Section> findByActiveWithStudents(boolean isActive) {
+        Session session = entityManager.unwrap(Session.class);
+        Query<Section> theQuery = session.createQuery(
+                "from Section s left join fetch s.students where s.isActive = :isActive order by s.curriculum.code, s.yearLevel, s.semester, s.name",
+                Section.class);
+        theQuery.setParameter("isActive", isActive);
+        return theQuery.getResultList();
+    }
+
+    @Override
     public void deleteById(int id) {
         Session session = entityManager.unwrap(Session.class);
         Query theQuery = session.createQuery("delete from Section where id = :sectionId");
@@ -121,6 +140,20 @@ public class SectionDaoImpl implements SectionDao {
             return theQuery.getSingleResult();
         } catch (Exception exc) {
             return null;
+        }
+    }
+
+    @Override
+    public int getCurrentEnrollmentCount(int sectionId) {
+        Session session = entityManager.unwrap(Session.class);
+        Query<Long> theQuery = session.createQuery(
+                "select count(s) from Student s where s.section.id = :sectionId", Long.class);
+        theQuery.setParameter("sectionId", sectionId);
+
+        try {
+            return theQuery.getSingleResult().intValue();
+        } catch (Exception exc) {
+            return 0;
         }
     }
 }

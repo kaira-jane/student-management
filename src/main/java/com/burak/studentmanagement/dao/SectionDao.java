@@ -14,6 +14,8 @@ public interface SectionDao {
 
     public List<Section> findAll();
 
+    public List<Section> findAllWithStudents();
+
     public List<Section> findByCurriculumId(int curriculumId);
 
     public List<Section> findByCurriculumIdAndActive(int curriculumId, boolean isActive);
@@ -24,7 +26,11 @@ public interface SectionDao {
 
     public List<Section> findByActive(boolean isActive);
 
+    public List<Section> findByActiveWithStudents(boolean isActive);
+
     public void deleteById(int id);
 
     public Section findByName(String name);
+
+    public int getCurrentEnrollmentCount(int sectionId);
 }

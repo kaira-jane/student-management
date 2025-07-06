@@ -283,11 +283,11 @@
             <div class="enrollment-info">
                 <div class="detail-item">
                     <strong>Enrollment:</strong>
-                    <span th:text="${section.currentEnrollment + ' / ' + section.capacity + ' students'}"></span>
+                    <span th:text="${section.currentEnrollmentCount + ' / ' + section.capacity + ' students'}"></span>
                 </div>
                 <div class="enrollment-bar">
-                    <div th:class="${'enrollment-fill ' + (section.full ? 'full' : '')}" 
-                         th:style="'width: ' + ${(section.currentEnrollment * 100 / section.capacity) + '%'}"></div>
+                    <div th:class="${'enrollment-fill ' + (section.isFull() ? 'full' : '')}" 
+                         th:style="'width: ' + ${(section.currentEnrollmentCount * 100 / section.capacity) + '%'}"></div>
                 </div>
             </div>
         </div>

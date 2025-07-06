@@ -65,6 +65,12 @@ public class SectionServiceImpl implements SectionService {
 
     @Override
     @Transactional
+    public List<Section> findByActiveWithStudents(boolean isActive) {
+        return sectionDao.findByActiveWithStudents(isActive);
+    }
+
+    @Override
+    @Transactional
     public void deleteById(int id) {
         sectionDao.deleteById(id);
     }
@@ -79,5 +85,11 @@ public class SectionServiceImpl implements SectionService {
     @Transactional
     public Section findByIdWithStudents(int id) {
         return sectionDao.findByIdWithStudents(id);
+    }
+
+    @Override
+    @Transactional
+    public int getCurrentEnrollmentCount(int sectionId) {
+        return sectionDao.getCurrentEnrollmentCount(sectionId);
     }
 }

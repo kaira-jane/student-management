@@ -35,8 +35,20 @@ public class StudentSectionController {
     @GetMapping("/assign/{studentId}")
     public String showAssignSectionForm(@PathVariable("studentId") int studentId, Model theModel) {
         Student student = studentService.findByStudentId(studentId);
+
+        if (student.getCurriculum() == null) {
+            theModel.addAttribute("error", "Student must have a curriculum assigned before assigning to a section!");
+            return "redirect:/admin/students";
+        }
+
         List<Section> availableSections = sectionService.findByCurriculumIdAndActive(student.getCurriculum().getId(),
                 true);
+
+        // Populate current enrollment count for each section
+        for (Section section : availableSections) {
+            int enrollmentCount = sectionService.getCurrentEnrollmentCount(section.getId());
+            section.setCurrentEnrollmentCount(enrollmentCount);
+        }
 
         theModel.addAttribute("student", student);
         theModel.addAttribute("availableSections", availableSections);
@@ -50,14 +62,22 @@ public class StudentSectionController {
             Model theModel) {
 
         Student student = studentService.findByStudentId(studentId);
-        Section section = sectionService.findByIdWithStudents(sectionId);
+        Section section = sectionService.findById(sectionId);
 
-        if (section != null && !section.isFull()) {
-            student.setSection(section);
-            studentService.save(student);
-            theModel.addAttribute("success", "Student assigned to section successfully!");
+        if (section != null) {
+            // Get current enrollment count from database
+            int currentEnrollment = sectionService.getCurrentEnrollmentCount(sectionId);
+            section.setCurrentEnrollmentCount(currentEnrollment);
+
+            if (!section.isFull()) {
+                student.setSection(section);
+                studentService.save(student);
+                theModel.addAttribute("success", "Student assigned to section successfully!");
+            } else {
+                theModel.addAttribute("error", "Section is full!");
+            }
         } else {
-            theModel.addAttribute("error", "Section is full or not found!");
+            theModel.addAttribute("error", "Section not found!");
         }
 
         return "redirect:/admin/students";
@@ -79,6 +99,12 @@ public class StudentSectionController {
         List<Section> sections = sectionService.findByActive(true);
         List<Student> students = studentService.findAllStudents();
 
+        // Populate current enrollment count for each section
+        for (Section section : sections) {
+            int enrollmentCount = sectionService.getCurrentEnrollmentCount(section.getId());
+            section.setCurrentEnrollmentCount(enrollmentCount);
+        }
+
         theModel.addAttribute("sections", sections);
         theModel.addAttribute("students", students);
         return "admin/bulk-assign-sections";
@@ -95,11 +121,15 @@ public class StudentSectionController {
             return "redirect:/admin/student-section/bulk-assign";
         }
 
-        Section section = sectionService.findByIdWithStudents(sectionId);
+        Section section = sectionService.findById(sectionId);
         if (section == null) {
             theModel.addAttribute("error", "Section not found!");
             return "redirect:/admin/student-section/bulk-assign";
         }
+
+        // Get current enrollment count from database
+        int currentEnrollment = sectionService.getCurrentEnrollmentCount(sectionId);
+        section.setCurrentEnrollmentCount(currentEnrollment);
 
         int assignedCount = 0;
         int skippedCount = 0;
@@ -114,19 +144,22 @@ public class StudentSectionController {
                 }
 
                 if (student.getCurriculum() == null) {
-                    errorMessages.append("Student ").append(student.getFirstName()).append(" ").append(student.getLastName()).append(" has no curriculum assigned. ");
+                    errorMessages.append("Student ").append(student.getFirstName()).append(" ")
+                            .append(student.getLastName()).append(" has no curriculum assigned. ");
                     skippedCount++;
                     continue;
                 }
 
                 if (student.getCurriculum().getId() != section.getCurriculum().getId()) {
-                    errorMessages.append("Student ").append(student.getFirstName()).append(" ").append(student.getLastName()).append(" has different curriculum. ");
+                    errorMessages.append("Student ").append(student.getFirstName()).append(" ")
+                            .append(student.getLastName()).append(" has different curriculum. ");
                     skippedCount++;
                     continue;
                 }
 
                 if (student.getSection() != null) {
-                    errorMessages.append("Student ").append(student.getFirstName()).append(" ").append(student.getLastName()).append(" is already assigned to a section. ");
+                    errorMessages.append("Student ").append(student.getFirstName()).append(" ")
+                            .append(student.getLastName()).append(" is already assigned to a section. ");
                     skippedCount++;
                     continue;
                 }
@@ -140,21 +173,25 @@ public class StudentSectionController {
                 studentService.save(student);
                 assignedCount++;
 
+                // Update the enrollment count for next iteration
+                currentEnrollment++;
+                section.setCurrentEnrollmentCount(currentEnrollment);
+
             } catch (Exception e) {
-                errorMessages.append("Error processing student ID ").append(studentId).append(": ").append(e.getMessage()).append(" ");
+                errorMessages.append("Error processing student ID ").append(studentId).append(": ")
+                        .append(e.getMessage()).append(" ");
             }
         }
 
         if (assignedCount > 0) {
-            theModel.addAttribute("success", assignedCount + " students assigned to section successfully!" + 
-                (skippedCount > 0 ? " " + skippedCount + " students skipped." : ""));
+            theModel.addAttribute("success", assignedCount + " students assigned to section successfully!" +
+                    (skippedCount > 0 ? " " + skippedCount + " students skipped." : ""));
         }
-        
+
         if (errorMessages.length() > 0) {
             theModel.addAttribute("error", errorMessages.toString());
         }
 
         return "redirect:/admin/section/" + sectionId;
     }
-}
 }

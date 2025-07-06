@@ -49,7 +49,7 @@ public class Student {
 	@JoinColumn(name = "curriculum_id")
 	private Curriculum curriculum;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "section_id")
 	private Section section;
 

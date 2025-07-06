@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -56,8 +57,12 @@ public class Section {
     @OneToMany(mappedBy = "section", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Student> students;
 
+    @Transient
+    private Integer currentEnrollmentCount;
+
     public Section() {
         this.students = new ArrayList<>();
+        this.currentEnrollmentCount = 0;
     }
 
     public Section(String name, String description, Curriculum curriculum, int yearLevel, int semester,
@@ -71,6 +76,7 @@ public class Section {
         this.capacity = capacity;
         this.isActive = true;
         this.students = new ArrayList<>();
+        this.currentEnrollmentCount = 0;
     }
 
     public int getId() {
@@ -153,6 +159,14 @@ public class Section {
         this.students = students;
     }
 
+    public Integer getCurrentEnrollmentCount() {
+        return currentEnrollmentCount;
+    }
+
+    public void setCurrentEnrollmentCount(Integer currentEnrollmentCount) {
+        this.currentEnrollmentCount = currentEnrollmentCount;
+    }
+
     public void addStudent(Student student) {
         if (students == null) {
             students = new ArrayList<>();
@@ -169,15 +183,36 @@ public class Section {
     }
 
     public int getCurrentEnrollment() {
-        return students != null ? students.size() : 0;
+        if (currentEnrollmentCount != null) {
+            return currentEnrollmentCount;
+        }
+        if (students == null) {
+            return 0;
+        }
+        return students.size();
     }
 
     public boolean isFull() {
-        return getCurrentEnrollment() >= capacity;
+        if (currentEnrollmentCount != null) {
+            return currentEnrollmentCount >= capacity;
+        }
+        if (students == null) {
+            return false;
+        }
+        return students.size() >= capacity;
     }
 
     public int getAvailableSlots() {
-        return capacity - getCurrentEnrollment();
+        // If we have the count from database, use it
+        if (currentEnrollmentCount != null) {
+            return capacity - currentEnrollmentCount;
+        }
+        // Otherwise, try to use the students list (may cause
+        // LazyInitializationException)
+        if (students == null) {
+            return capacity;
+        }
+        return capacity - students.size();
     }
 
     @Override

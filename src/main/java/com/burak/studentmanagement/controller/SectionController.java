@@ -34,6 +34,13 @@ public class SectionController {
     @GetMapping("/list")
     public String showSectionList(Model theModel) {
         List<Section> sections = sectionService.findAll();
+
+        // Populate current enrollment count for each section
+        for (Section section : sections) {
+            int enrollmentCount = sectionService.getCurrentEnrollmentCount(section.getId());
+            section.setCurrentEnrollmentCount(enrollmentCount);
+        }
+
         theModel.addAttribute("sections", sections);
         return "admin/section-list";
     }
@@ -78,6 +85,10 @@ public class SectionController {
     public String showSectionDetails(@PathVariable("sectionId") int sectionId, Model theModel) {
         Section section = sectionService.findById(sectionId);
         List<Student> students = studentService.findBySectionId(sectionId);
+
+        // Populate current enrollment count
+        int enrollmentCount = sectionService.getCurrentEnrollmentCount(sectionId);
+        section.setCurrentEnrollmentCount(enrollmentCount);
 
         theModel.addAttribute("section", section);
         theModel.addAttribute("students", students);
